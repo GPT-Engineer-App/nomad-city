@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, VStack, Heading, Input, Button, List, ListItem, IconButton, useToast } from "@chakra-ui/react";
+import { Container, VStack, Heading, Input, Button, List, Box, HStack, IconButton, useToast } from "@chakra-ui/react";
 import { FaPlus, FaTrash, FaEdit, FaCheck } from "react-icons/fa";
 
 const API_URL = "https://sheetdb.io/api/v1/atvconiejzkc3";
@@ -143,12 +143,14 @@ const Index = () => {
         </Button>
         <List spacing={3} w="full">
           {cities.map((city) => (
-            <ListItem key={city.id} d="flex" justifyContent="space-between" alignItems="center">
+            <Box key={city.id} p={4} boxShadow="md" borderWidth="1px" borderRadius="lg" d="flex" justifyContent="space-between" alignItems="center" mb={4}>
               <Input value={city.name} onChange={(e) => handleCityNameChange(e, city.id)} isReadOnly={!city.isEditing} />
-              <IconButton aria-label="Edit city" icon={<FaEdit />} onClick={() => toggleEdit(city.id)} colorScheme="blue" />
-              <IconButton aria-label="Delete city" icon={<FaTrash />} onClick={() => deleteCity(city.id)} colorScheme="red" />
-              <IconButton aria-label="Save city" icon={<FaCheck />} onClick={() => updateCity(city.id)} colorScheme="green" display={city.isEditing ? "inline-flex" : "none"} />
-            </ListItem>
+              <HStack>
+                <IconButton aria-label="Edit city" icon={<FaEdit />} onClick={() => toggleEdit(city.id)} colorScheme="blue" />
+                <IconButton aria-label="Delete city" icon={<FaTrash />} onClick={() => deleteCity(city.id)} colorScheme="red" />
+                <IconButton aria-label="Save city" icon={<FaCheck />} onClick={() => updateCity(city.id)} colorScheme="green" display={city.isEditing ? "inline-flex" : "none"} />
+              </HStack>
+            </Box>
           ))}
         </List>
       </VStack>
