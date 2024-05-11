@@ -141,15 +141,18 @@ const Index = () => {
         <Button leftIcon={<FaPlus />} colorScheme="teal" onClick={addCity} isLoading={loading}>
           Add City
         </Button>
-        <List spacing={3} w="full">
+        <List spacing={3} w="full" display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={6}>
           {cities.map((city) => (
-            <Box key={city.id} p={4} boxShadow="md" borderWidth="1px" borderRadius="lg" d="flex" justifyContent="space-between" alignItems="center" mb={4}>
-              <Input value={city.name} onChange={(e) => handleCityNameChange(e, city.id)} isReadOnly={!city.isEditing} />
-              <HStack>
-                <IconButton aria-label="Edit city" icon={<FaEdit />} onClick={() => toggleEdit(city.id)} colorScheme="blue" />
-                <IconButton aria-label="Delete city" icon={<FaTrash />} onClick={() => deleteCity(city.id)} colorScheme="red" />
-                <IconButton aria-label="Save city" icon={<FaCheck />} onClick={() => updateCity(city.id)} colorScheme="green" display={city.isEditing ? "inline-flex" : "none"} />
-              </HStack>
+            <Box key={city.id} p={4} boxShadow="md" borderWidth="1px" borderRadius="lg" bg="white" overflow="hidden">
+              <Box bgImage="url('https://via.placeholder.com/150')" bgPosition="center" bgRepeat="no-repeat" bgSize="cover" height="150px" />
+              <VStack p={4} alignItems="stretch" spacing={4}>
+                <Input value={city.name} onChange={(e) => handleCityNameChange(e, city.id)} isReadOnly={!city.isEditing} />
+                <HStack justifyContent="space-between">
+                  <IconButton aria-label="Edit city" icon={<FaEdit />} onClick={() => toggleEdit(city.id)} colorScheme="blue" />
+                  <IconButton aria-label="Delete city" icon={<FaTrash />} onClick={() => deleteCity(city.id)} colorScheme="red" />
+                  <IconButton aria-label="Save city" icon={<FaCheck />} onClick={() => updateCity(city.id)} colorScheme="green" display={city.isEditing ? "inline-flex" : "none"} />
+                </HStack>
+              </VStack>
             </Box>
           ))}
         </List>
