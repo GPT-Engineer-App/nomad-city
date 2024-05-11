@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, VStack, Heading, Input, Button, List, ListItem, IconButton, useToast } from "@chakra-ui/react";
-import { FaPlus, FaTrash, FaEdit } from "react-icons/fa";
+import { FaPlus, FaTrash, FaEdit, FaCheck } from "react-icons/fa";
 
 const API_URL = "https://sheetdb.io/api/v1/atvconiejzkc3";
 
@@ -65,6 +65,14 @@ const Index = () => {
     setLoading(false);
   };
 
+  const handleCityNameChange = (e, id) => {
+    setCities(cities.map((city) => (city.id === id ? { ...city, name: e.target.value } : city)));
+  };
+
+  const toggleEdit = (id) => {
+    setCities(cities.map((city) => (city.id === id ? { ...city, isEditing: !city.isEditing } : city)));
+  };
+
   const deleteCity = async (id) => {
     setLoading(true);
     try {
@@ -92,6 +100,39 @@ const Index = () => {
     setLoading(false);
   };
 
+  const updateCity = async (id) => {
+    const city = cities.find((c) => c.id === id);
+    if (!city) return;
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_URL}/id/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: { name: city.name } }),
+      });
+      if (response.ok) {
+        fetchCities();
+        toast({
+          title: "City updated",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error updating city",
+        description: error.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+    setLoading(false);
+  };
+
   return (
     <Container maxW="container.md" py={8}>
       <VStack spacing={4}>
@@ -103,8 +144,10 @@ const Index = () => {
         <List spacing={3} w="full">
           {cities.map((city) => (
             <ListItem key={city.id} d="flex" justifyContent="space-between" alignItems="center">
-              {city.name}
+              <Input value={city.name} onChange={(e) => handleCityNameChange(e, city.id)} isReadOnly={!city.isEditing} />
+              <IconButton aria-label="Edit city" icon={<FaEdit />} onClick={() => toggleEdit(city.id)} colorScheme="blue" />
               <IconButton aria-label="Delete city" icon={<FaTrash />} onClick={() => deleteCity(city.id)} colorScheme="red" />
+              <IconButton aria-label="Save city" icon={<FaCheck />} onClick={() => updateCity(city.id)} colorScheme="green" display={city.isEditing ? "inline-flex" : "none"} />
             </ListItem>
           ))}
         </List>
