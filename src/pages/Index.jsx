@@ -41,7 +41,7 @@ const Index = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ data: [{ name: newCity }] }),
+        body: JSON.stringify({ data: [{ id: "INCREMENT", name: newCity }] }),
       });
       if (response.ok) {
         fetchCities();
